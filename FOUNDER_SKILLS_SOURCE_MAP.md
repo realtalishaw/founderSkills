@@ -50,6 +50,16 @@ Current create-new-company branches:
 - Come up with an idea for me
 - Build my idea
 
+When a founder commits to a generated idea or confirms their own idea, onboarding creates:
+
+`IDEA.md`
+
+Use the template:
+
+`instructions/onboarding/templates/IDEA.md`
+
+Do not create `COMPANY.md` during onboarding; the company has not been named or defined yet.
+
 ## First Skill
 
 Startup idea discovery:
@@ -71,6 +81,8 @@ This skill generates one research-backed startup idea card with:
 - Proof and signals
 - Market gap
 - Result-based execution plan
+
+The keyword graph should use sourced yearly time-series data. Try exact-volume sources first, including Semrush's free keyword volume checker, then fall back to Google Trends relative interest when exact volume is unavailable or blocked.
 
 ## Conversion Notes
 

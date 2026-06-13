@@ -1,6 +1,6 @@
 ---
 name: startup-idea-discovery
-description: Research-backed startup idea discovery for generating one specific, current, evidence-backed company idea with opportunity scoring, keyword/community signals, offer, market gap, and execution plan. Use when the founder chooses "come up with an idea for me" during onboarding, or when an agent needs to generate a fresh startup opportunity rather than evaluate a user's existing idea.
+description: Research-backed startup idea discovery for generating one specific, current, evidence-backed company idea with opportunity scoring, sourced keyword time-series graph, community signals, offer, market gap, and execution plan. Use when the founder chooses "come up with an idea for me" during onboarding, or when an agent needs to generate a fresh startup opportunity rather than evaluate a user's existing idea.
 ---
 
 # Startup Idea Discovery
@@ -46,7 +46,39 @@ For each territory, search for recent evidence:
 - Competitors with traction but visible gaps
 - Search queries with commercial intent
 
-### 2. Find Problem Signals
+### 2. Collect Keyword Time-Series Data
+
+The idea card must include a real keyword graph based on sourced time-series data. Do not use decorative bars, unsourced "High/Medium/Low" signals, or invented search volumes.
+
+Pick one primary keyword that best represents the opportunity and 2 to 4 supporting keywords. For the primary keyword, collect values across a consistent historical interval from one or more credible sources.
+
+Use this source priority:
+
+1. Exact volume history from a keyword data provider, such as Google Keyword Planner, Semrush, Ahrefs, DataForSEO, Similarweb, Keywords Everywhere, or another SEO provider
+2. Current exact volume from a free/manual tool, starting with the Semrush free keyword volume checker, then Google Keyword Planner, WordStream, or Keyword Surfer, paired with Google Trends relative history
+3. Google Trends relative interest only, when exact volume is not available
+4. Public keyword reports or trend datasets with dated values
+
+For the free/manual pass, try Semrush's free keyword volume checker first. Capture the keyword, country/database, search volume, keyword difficulty, CPC, and source URL if the tool returns them. If Semrush blocks access, requires login, rate-limits, or returns no usable metric, state that and continue to the next source. Do not infer Semrush metrics from snippets or page copy.
+
+Prefer exact search volume when available. If exact volume history is unavailable, use Google Trends relative interest and label the y-axis as `Relative interest`, not `Volume`. If a source provides current search volume but only relative trend history, show the current volume as a separate metric and graph the trend index separately. Never convert relative interest into exact volume unless a source provides the conversion.
+
+Aggregate chart data by year only. The keyword graph should be easy to read in a chat response or document. Do not use monthly x-axis labels in the final idea card unless the user explicitly asks for a more granular chart. When collecting monthly data, summarize it into annual averages or annual totals before graphing.
+
+Required keyword graph data:
+
+- Primary keyword
+- Data source name and URL
+- Date accessed
+- Geography, if available
+- Historical interval and graph granularity; default graph granularity is yearly
+- Current volume or current relative interest
+- Growth calculation, such as latest value versus first value, latest value versus previous comparable period, or source-provided growth
+- At least 3 yearly data points when available; use fewer only when the keyword is too new and say so explicitly
+
+If no credible time-series data can be found for the strongest keyword, choose a different primary keyword or explicitly say the graph is unavailable because no source was found. Do not fill the gap with estimates.
+
+### 3. Find Problem Signals
 
 Look for evidence that people already spend time, money, or social energy on the problem:
 
@@ -59,7 +91,7 @@ Look for evidence that people already spend time, money, or social energy on the
 
 Capture exact language when it reveals urgency, but quote sparingly.
 
-### 3. Map Existing Alternatives
+### 4. Map Existing Alternatives
 
 Identify 5 to 10 alternatives:
 
@@ -80,7 +112,7 @@ Look for gaps:
 - Not AI-native
 - No vertical specialization
 
-### 4. Score The Idea
+### 5. Score The Idea
 
 Score each dimension from 0 to 10. Use evidence, not vibes.
 
@@ -137,37 +169,43 @@ Use a simple table:
 
 ### Keyword Graph And Insights
 
-Include a lightweight keyword insight table and a small text graph if data is available.
+Include an actual keyword graph for the primary keyword using sourced yearly time-series data. The graph should show search volume by year when exact volume data is available, or relative interest by year when only trend-index data is available.
 
-Required fields:
+Required fields above or beside the graph:
 
-| Keyword | Intent | Signal | Notes |
-| --- | --- | --- | --- |
+- Keyword
+- Current volume or current relative interest
+- Growth percentage and how it was calculated
+- Source and date accessed
+- Geography and yearly interval, when available
 
-For the graph, use one of these formats:
-
-```text
-Keyword demand snapshot
-workflow automation       ██████████ High
-template for X            ██████ Medium
-software for Y            ████ Emerging
-```
-
-or:
+Use a real chart format, preferably Mermaid:
 
 ```mermaid
 xychart-beta
-  title "Keyword Interest Snapshot"
-  x-axis ["Keyword A", "Keyword B", "Keyword C"]
-  y-axis "Relative Signal" 0 --> 10
-  bar [8, 6, 4]
+  title "Keyword: browser extensions"
+  x-axis ["2023", "2024", "2025", "2026"]
+  y-axis "Annual search volume" 0 --> 60000
+  line [15000, 17000, 28000, 49500]
 ```
 
-Use relative signals when exact search volume is not available. Label them as relative.
+If Mermaid is not supported, render the graph as another actual chart format available in the harness, or provide a CSV-style source-data block plus a clear note that the chart renderer is unavailable.
+
+After the graph, add 3 to 5 concise insights:
+
+- What changed in the trend
+- Whether growth is steady, spiky, seasonal, or newly accelerating
+- What the keyword suggests about buyer intent
+- How the trend affects the opportunity score
+- Any caveat about data source limits
+
+Do not substitute the graph with a keyword table. The separate `Top Keywords` section can list supporting keywords, but this section must show the time-series graph.
 
 ### Business Fit
 
-Explain:
+Give a brief overview of the founder/company fit. Keep this section qualitative unless a score would clarify the recommendation.
+
+Include:
 
 - Best-fit founder profile
 - Required domain knowledge
@@ -176,7 +214,15 @@ Explain:
 
 ### Revenue Potential
 
-Describe:
+Score revenue potential from 0 to 10.
+
+Use this format:
+
+| Score | Overview |
+| ---: | --- |
+| 0-10 | One sentence on how strong the revenue opportunity is and why. |
+
+Then include 3 to 7 quick bullets covering:
 
 - Likely buyer
 - Pricing model
@@ -186,7 +232,15 @@ Describe:
 
 ### Execution Difficulty
 
-Describe:
+Score execution difficulty from 0 to 10, where 10 means very difficult to execute.
+
+Use this format:
+
+| Score | Overview |
+| ---: | --- |
+| 0-10 | One sentence on how hard this is to build, sell, and operate. |
+
+Then include 3 to 7 quick bullets covering:
 
 - MVP complexity
 - Data, integration, or compliance challenges
@@ -195,7 +249,15 @@ Describe:
 
 ### Go To Market
 
-Describe:
+Score go-to-market strength from 0 to 10.
+
+Use this format:
+
+| Score | Overview |
+| ---: | --- |
+| 0-10 | One sentence on how reachable the first customers are and how clear the channel is. |
+
+Then include 3 to 7 quick bullets covering:
 
 - First niche
 - First channel
@@ -213,11 +275,13 @@ Include:
 
 ### Top Keywords
 
-Include 5 to 10 keywords. Separate by type when possible:
+Include 5 to 10 supporting keywords. Separate by type when possible:
 
 - Fastest growing
 - Highest volume
 - Most relevant commercial intent
+
+For each keyword, include volume, growth, geography, and source when available. If a metric is unavailable, write `not found` rather than estimating. Keep this section secondary to the keyword graph; the graph is the primary visual evidence.
 
 ### Offer
 
